@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h3 class="text-success mb-4">Your Borrowed Books</h3>
+
+    {% if borrowed_books %}
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for borrow in borrowed_books %}
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">{{ borrow.book.title }}</h5>
+                        <p class="card-text">
+                            <strong>Duration:</strong> {{ borrow.duration }}<br>
+                            <strong>Borrowed on:</strong> {{ borrow.borrowed_at|date:"d M Y, H:i" }}
+                        </p>
+                        <a href="{% url 'book_detail' book_id=borrow.book.id %}" class="btn btn-outline-success">View Book</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted fs-5">No Borrowed Book yet</p>
+    {% endif %}
+</div>
+{% endblock %}

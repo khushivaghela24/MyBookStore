@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Search Bar Section -->
+<div class="container mt-4">
+    <form method="get" action="{% url 'search_books' %}" class="d-flex justify-content-center">
+        <input class="form-control me-2 search-box" type="search" name="q" placeholder="Search books by title" aria-label="Search" required>
+        <button class="btn btn-success" type="submit">Search</button>
+    </form>
+</div>
+
+<!-- Welcome Message -->
+<div class="container text-center mt-5">
+    <h2 class="fw-bold">Welcome to MyBookStore!</h2>
+    <p class="fs-5 fst-italic text-muted">“A room without books is like a body without a soul.”</p>
+</div>
+
+{% if not user.is_authenticated %}
+<!-- Carousel Section -->
+<div id="demo" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active bg-light"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="1" class="bg-light"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="2" class="bg-light"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="3" class="bg-light"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="4" class="bg-light"></button>
+    </div>
+
+    <!-- Carousel Images -->
+    <div class="carousel-inner text-center">
+        <div class="carousel-item active">
+            <img src="{% static 'B7.png' %}" class="mx-auto d-block" style="height: 400px; width: auto;">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'B9.png' %}" class="mx-auto d-block" style="height: 400px; width: auto;">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'B6.png' %}" class="mx-auto d-block" style="height: 400px; width: auto;">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'B11.png' %}" class="mx-auto d-block" style="height: 400px; width: auto;">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'B15.png' %}" class="mx-auto d-block" style="height: 400px; width: auto;">
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" style="background-color: white;"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+        <span class="carousel-control-next-icon" style="background-color: white;"></span>
+    </button>
+</div>
+{% endif %}
+
+<!-- General Section -->
+<div class="container mt-5">
+    <h3 class="fw-bold text-success mb-4 text-center">General</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for book in general_books %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'book_detail' book.id %}" class="text-decoration-none text-success">{{ book.title }}</a>
+                    </h5>
+                    <a href="{% url 'borrow_book' book_id=book.id %}" class="btn btn-outline-success mt-2">Borrow</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No books available in the General category at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Story Section -->
+<div class="container mt-5">
+    <h3 class="fw-bold text-success mb-4 text-center">Story</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for book in story_books %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'book_detail' book.id %}" class="text-decoration-none text-success">{{ book.title }}</a>
+                    </h5>
+                    <a href="{% url 'borrow_book' book_id=book.id %}" class="btn btn-outline-success mt-2">Borrow</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No Story books available right now.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Study Section -->
+<div class="container mt-5 mb-5">
+    <h3 class="fw-bold text-success mb-4 text-center">Study</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for book in study_books %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 300px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'book_detail' book.id %}" class="text-decoration-none text-success">{{ book.title }}</a>
+                    </h5>
+                    <a href="{% url 'borrow_book' book_id=book.id %}" class="btn btn-outline-success mt-2">Borrow</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No Study books available right now.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Contact Us Section -->
+<div class="container mt-5">
+    <h3 class="fw-bold text-success text-center mb-4">Contact Us</h3>
+    <div class="row align-items-center">
+        <!-- Contact Form -->
+        <div class="col-md-6">
+            <form method="post" action="#">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Your Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Your Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Send Message</button>
+            </form>
+        </div>
+
+        <!-- Contact Image -->
+        <div class="col-md-6 text-center">
+            <img src="{% static 'contact_us.png' %}" alt="Contact Us" class="img-fluid rounded shadow" style="max-height: 400px;">
+        </div>
+    </div>
+</div>
+
+<!-- About Us Section -->
+<div class="container mt-5 mb-5">
+    <h3 class="fw-bold text-success text-center mb-4">About Us</h3>
+    <div class="row">
+        <div class="col">
+            <p class="fs-5 text-muted text-justify">
+                <strong>MyBookStore</strong> is a digital platform designed to bring readers and learners together. Our mission is to
+                make books accessible to everyone, from casual readers to passionate researchers.
+                <br><br>
+                Whether you're interested in general knowledge, immersive stories, or in-depth study materials, we've
+                got a curated collection just for you. Users can explore books, read reviews, and even borrow physical copies.
+                <br><br>
+                Our goal is to foster a reading community that thrives on knowledge sharing and intellectual curiosity.
+                We're more than just a bookstore — we're a hub for lifelong learning and book lovers alike.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

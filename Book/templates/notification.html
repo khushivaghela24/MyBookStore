@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Upcoming Due Books</h2>
+
+{% if alerts %}
+  <ul>
+    {% for alert in alerts %}
+      <li>
+        <strong>{{ alert.book.title }}</strong> is due in {{ alert.days_left }} days (Due: {{ alert.due_date }})
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No upcoming due books.</p>
+{% endif %}
+{% endblock %}

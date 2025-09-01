@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4 text-success text-center">{{ category }} Books</h2>
+
+{% if books %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for book in books %}
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 250px; object-fit: cover;">
+      <div class="card-body text-center">
+        <h5 class="card-title">{{ book.title }}</h5>
+        {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'borrow_book' book.id %}">
+          {% csrf_token %}
+          <input type="hidden" name="duration" value="1 Week">
+          <button type="submit" class="btn btn-success mt-2">Borrow</button>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-primary">Login to Borrow</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">No books available in this category.</div>
+{% endif %}
+{% endblock %}
